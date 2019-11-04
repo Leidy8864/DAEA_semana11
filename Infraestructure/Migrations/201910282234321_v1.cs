@@ -10,15 +10,15 @@
             CreateTable(
                 "dbo.Students",
                 c => new
-                    {
-                        studentID = c.Int(nullable: false, identity: true),
-                        studentName = c.String(nullable: false),
-                        studentAddress = c.String(nullable: false),
-                    })
-                .PrimaryKey(t => t.studentID);
-            
+                {
+                    StundentID = c.Int(nullable: false, identity: true),
+                    StudentName = c.String(nullable: false),
+                    StudentAddress = c.String(nullable: false),
+                })
+                .PrimaryKey(t => t.StundentID);
+
         }
-        
+
         public override void Down()
         {
             DropTable("dbo.Students");

@@ -15,8 +15,9 @@ namespace Service
             List<Student> students = null;
             using (var context = new SchoolContext())
             {
-                students = context.Students.ToList();
+                students = context.Students.Where(x => x.Activo == true).ToList();
             }
+
             return students;
         }
 
@@ -25,30 +26,52 @@ namespace Service
             Student student = null;
             using (var context = new SchoolContext())
             {
+
                 student = context.Students.Find(ID);
+
             }
+
             return student;
         }
+
+
+        public List<Student> Busqueda(string NombreApellido)
+        {
+            List<Student> students = null;
+            using (var context = new SchoolContext())
+            {
+                students = context.Students.Where(x => x.Activo == true && x.StudentName.Contains(NombreApellido) || x.Activo == true && x.LastName.Contains(NombreApellido)).ToList();
+            }
+
+            return students;
+        }
+
 
         public void Insert(Student student)
         {
             using (var context = new SchoolContext())
             {
+                student.Activo = true;
                 context.Students.Add(student);
                 context.SaveChanges();
+
             }
         }
 
-        public void Update(Student student, int ID)
+        public void Update(Student studentNew, int ID)
         {
             using (var context = new SchoolContext())
             {
-                var studentNew = context.Students.Find(ID);
 
-                studentNew.studentName = student.studentName;
-                student.studentAddress = student.studentAddress;
+                var student = context.Students.Find(ID);
+
+                student.FechaModificacion = studentNew.FechaModificacion;
+                student.StudentName = studentNew.StudentName;
+                student.LastName = studentNew.LastName;
+                student.StudentAddress = studentNew.StudentAddress;
 
                 context.SaveChanges();
+
             }
         }
 
@@ -56,9 +79,12 @@ namespace Service
         {
             using (var context = new SchoolContext())
             {
+
                 var student = context.Students.Find(ID);
-                context.Students.Remove(student);
+                student.Activo = false;
+                //context.Students.Remove(student);
                 context.SaveChanges();
+
             }
         }
     }

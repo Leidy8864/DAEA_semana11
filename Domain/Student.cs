@@ -9,12 +9,24 @@ namespace Domain
     public class Student
     {
         [Key]
-        public int studentID { get; set; }
+        public int StundentID { get; set; }
 
         [Required]
-        public string studentName { get; set; }
+        public string Codigo { get; set; }
 
         [Required]
-        public string studentAddress { get; set; }
+        public string StudentName { get; set; }
+
+        [Required]
+        public string LastName { get; set; }
+
+        public DateTime? FechaCreacion { get; set; }
+
+        public DateTime? FechaModificacion { get; set; }
+
+        [Required]
+        public string StudentAddress { get; set; }
+
+        public bool? Activo { get; set; }
     }
 }
