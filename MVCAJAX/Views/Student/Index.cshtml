@@ -5,37 +5,12 @@
 }
 
 <div class="col-md-12">
-    @*<div class="panel panel-primary">
-            <div class="page-heading">
-                <h3 class="panel-title">Please enter the details below.</h3>
-            </div>
-            <div class="panel-body">
-                <div class="form-group col-md-5">
-                    <label>Student Name</label>
-                    <input type="text" class="form-control" name="StudentName" id="StudentName" placeholder="Enter Student Name" required />
-                </div>
-                <div class="form-group col-md-5">
-                    <label>Student Address</label>
-                    <input type="text" class="form-control" name="StudentAddress" id="StudentAddress" placeholder="Enter Student Address" required />
-                </div>
-
-                <div class="form-group col-md-1">
-                    <div style="float: right; display:inline-block;">
-                        <input class="btn btn-primary" id="btnSave" type="button" name="SubmitButton" value="Save" />
-                    </div>
-                </div>
-            </div>
-        </div><hr />*@
-
-    <br />
-
     <p>
         <h2>Mantenimiento de Estudiantes</h2>
     </p>
 
     <input type="text" id="txtBuscar" name="txtBuscar" value="" />
     <button class="btn btn-primary btnBuscar">Buscar</button>
-
     <button class="btn btn-primary btnNuevo">Nuevo</button>
 
     <br />
@@ -67,9 +42,9 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-sm-2 control-label" for="StudentLastName">Lastname</label>
+                            <label class="col-sm-2 control-label" for="StudentLastName">StudentLastName</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" name="StudentLastName" id="StudentLastName" placeholder="Enter Student LastName" required />
+                                <input type="text" class="form-control" name="StudentLastName" id="StudentLastName" placeholder="Enter Student StudentLastName" required />
                             </div>
                         </div>
                         <div class="form-group row">
@@ -78,12 +53,6 @@
                                 <input type="text" class="form-control" name="StudentAddress" id="StudentAddress" placeholder="Enter Student Address" required />
                             </div>
                         </div>
-                        @*<div class="form-group row">
-                                <label class="col-sm-2 control-label" for="inputFecha">Fecha</label>
-                                <div class="col-sm-10">
-                                    <input class="form-control" id="inputFecha" type="date" placeholder="Fecha" />
-                                </div>
-                            </div>*@
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -101,7 +70,7 @@
                 <th align="left" class="productth">ID</th>
                 <th align="left" class="productth">Codigo</th>
                 <th align="left" class="productth">Student Name</th>
-                <th align="left" class="productth">Student LastName</th>
+                <th align="left" class="productth">Student StudentLastName</th>
                 <th align="left" class="productth">Student Address</th>
                 <th align="left" class="productth">Actions</th>
             </tr>
@@ -132,9 +101,7 @@
         });
 
         $('.btnBuscar').click(() => {
-
             LoadDataFiltrada();
-
         });
 
 
@@ -142,52 +109,36 @@
 
             LoadData();
 
-           /* $("#btnSave").click(function () {
-                var std = {};
-                std.studentName = $('#StudentName').val();
-                std.studentAddress = $('#StudentAddress').val();
-
-
-                $.ajax({
-                    type: "POST",
-                    url: '*/@*Url.Action("createStudent")*@/*',
-                    data: '{ std: ' + JSON.stringify(std) + '}',
-                    dataType: "json",
-                    contentType: "application/json; charset=utf-8",
-                    success: function () {
-
-                        LoadData();
-
-                    },
-                    error: function () {
-
-                        alert("Error while inserting data");
-                    }
-                });
-                return false;
-
-            });*/
-
             $("#btnGuardar").click(function () {
                 var std = {};
-                std.codigo = $('#StudentCode').val();
-                std.studentName = $('#StudentName').val();
-                std.lastName = $('#StudentLastName').val();
-                std.studentAddress = $('#StudentAddress').val();
+                std.StudentID = $('#id').val();
+                std.Codigo = $('#StudentCode').val();
+                std.StudentName = $('#StudentName').val();
+                std.StudentLastName = $('#StudentLastName').val();
+                std.StudentAddress = $('#StudentAddress').val();
 
                 val_id = $('#id').val();
+                console.log("iddd" + val_id)
+                console.log("111")
+                console.log(std)
+                console.log("111")
 
-                if(val_id==''){
-                    ruta = '@Url.Action("CreateStudent")';
+                if (val_id == '') {
+                    ruta = '@Url.Action("createStudent")';
                     datos = '{ std: ' + JSON.stringify(std) + '}'
-                }else{
-                    ruta = '@Url.Action("UpdateStudent")';
-                    datos =  '{ std: ' + JSON.stringify(std) + ' , Id : ' + val_id + ' }'
+
+                } else {
+                    ruta = '@Url.Action("updateStudent")';
+                    //std.StudentID = val_id;
+                    //datos = '{ std: ' + JSON.stringify(std) + ' , Id : ' + val_id + ' }'
+                    datos =  '{ std: ' + JSON.stringify(std) + ' }'
                     //datos.id = val_id;
                 }
 
 
-                console.log(std);
+                console.log("000")
+                console.log(std)
+                console.log("000")
                 $.ajax({
                     type: "POST",
                     url: ruta,
@@ -222,7 +173,7 @@
             console.log(filtro);
             $.ajax({
                 type: "POST",
-                url: '@Url.Action("Busqueda")',
+                url: '@Url.Action("searchStudent")',
                 dataType: "json",
                 data: { "NombreApellido" : filtro },
                 success: function (data) {
@@ -230,13 +181,13 @@
                     var items = '';
                     $.each(data, function (i, item) {
                         var rows = "<tr>"
-                            + "<td class='producttd'>" + item.StundentID + "</td>"
+                            + "<td class='producttd'>" + item.StudentID + "</td>"
                             + "<td class='producttd'>" + item.Codigo + "</td>"
                             + "<td class='producttd'>" + item.StudentName + "</td>"
-                            + "<td class='producttd'>" + item.LastName + "</td>"
+                            + "<td class='producttd'>" + item.StudentLastName + "</td>"
                             + "<td class='producttd'>" + item.StudentAddress + "</td>"
-                            + '<td><button data-id="' + item.StundentID + '" class="btn btn-info btnEditar"><i class="glyphicon glyphicon-pencil"></i></button>'
-                            + ' <button data-id="'+ item.StundentID +'" class="btn btn-danger btnEliminar"><i class="glyphicon glyphicon-trash"></i></button></td>'
+                            + '<td><button data-id="' + item.StudentID + '" class="btn btn-info btnEditar"><i class="glyphicon glyphicon-pencil"></i></button>'
+                            + ' <button data-id="'+ item.StudentID +'" class="btn btn-danger btnEliminar"><i class="glyphicon glyphicon-trash"></i></button></td>'
                             + "</tr>";
                         $('#tblStudent tbody').append(rows);
                     });
@@ -269,13 +220,13 @@
                     var items = '';
                     $.each(data, function (i, item) {
                         var rows = "<tr>"
-                            + "<td class='producttd'>" + item.StundentID + "</td>"
+                            + "<td class='producttd'>" + item.StudentID + "</td>"
                             + "<td class='producttd'>" + item.Codigo + "</td>"
                             + "<td class='producttd'>" + item.StudentName + "</td>"
-                            + "<td class='producttd'>" + item.LastName + "</td>"
+                            + "<td class='producttd'>" + item.StudentLastName + "</td>"
                             + "<td class='producttd'>" + item.StudentAddress + "</td>"
-                            + '<td><button data-id="' + item.StundentID + '" class="btn btn-info btnEditar"><i class="glyphicon glyphicon-pencil"></i></button>'
-                            + ' <button data-id="'+ item.StundentID +'" class="btn btn-danger btnEliminar"><i class="glyphicon glyphicon-trash"></i></button></td>'
+                            + '<td><button data-id="' + item.StudentID + '" class="btn btn-info btnEditar"><i class="glyphicon glyphicon-pencil"></i></button>'
+                            + ' <button data-id="'+ item.StudentID +'" class="btn btn-danger btnEliminar"><i class="glyphicon glyphicon-trash"></i></button></td>'
                             + "</tr>";
                         $('#tblStudent tbody').append(rows);
                     });
@@ -297,12 +248,12 @@
         $('#tblStudent').on('click', '.btnEditar', function() {
             val_id = $(this).data('id');
 
-             $.post( '@Url.Action("EstudentDetail")' , {Id : val_id}, (data) => {
+             $.post( '@Url.Action("detailStudent")' , {Id : val_id}, (data) => {
 
-                 $('#id').val(data.StundentID);
+                 $('#id').val(data.StudentID);
                  $('#StudentCode').val(data.Codigo);
                  $('#StudentName').val(data.StudentName);
-                 $('#StudentLastName').val(data.LastName);
+                 $('#StudentLastName').val(data.StudentLastName);
                  $('#StudentAddress').val(data.StudentAddress);
                  $('#myModal').modal('show');
                  $('#myModalLabel').text('Editar')
@@ -316,12 +267,11 @@
         $('#tblStudent').on('click', '.btnEliminar', function() {
             val_id = $(this).data('id');
             if(confirm('Desea eliminar este registro?')){
-                $.post( '@Url.Action("DeleteStudent")' , {id: val_id}, (data) => {
+                $.post( '@Url.Action("deleteStudent")' , {id: val_id}, (data) => {
                     LoadData();
                 });
             }
         });
-
 
     </script>
 }

@@ -1,28 +1,22 @@
-﻿using Service;
-using Domain;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Threading.Tasks;
+using MVCAJAX.Models;
 
 namespace MVCAJAX.Controllers
 {
     public class StudentController : Controller
     {
-        private StudentService service = new StudentService();
+        Proxy.StudentProxy proxy = new Proxy.StudentProxy();
 
         // GET: Student
         public ActionResult IndexRazor()
         {
-            var model = (from c in service.Get()
-                         select new StudentModel
-                         {
-                             ID = c.StundentID,
-                             StudentAddress = c.StudentAddress,
-                             StudentName = c.StudentName
-                         }).ToList();
-            return View(model);
+            var response = Task.Run(() => proxy.GetStudentsAsync());
+            return View(response.Result.listado);
         }
 
         public ActionResult Index()
@@ -32,56 +26,48 @@ namespace MVCAJAX.Controllers
 
         public JsonResult getStudent(string id)
         {
-            return Json(service.Get(), JsonRequestBehavior.AllowGet);
+            var response = Task.Run(() => proxy.GetStudentsAsync());
+            return Json(response.Result.listado, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
-        public ActionResult Busqueda(string NombreApellido)
+        public ActionResult searchStudent(string query)
         {
-
-            return Json(service.Busqueda(NombreApellido), JsonRequestBehavior.AllowGet);
-
+            var response = Task.Run(() => proxy.SearchStudentsAsync(query));
+            string message = response.Result.Mensaje;
+            return Json(response.Result.listado, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
-        public ActionResult EstudentDetail(int Id)
+        public ActionResult detailStudent(int Id)
         {
-
-            return Json(service.GetById(Id), JsonRequestBehavior.AllowGet);
-
+            var response = Task.Run(() => proxy.GetStudentAsync(Id));
+            return Json(response.Result.objeto, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
-        public ActionResult CreateStudent(Student std)
+        public ActionResult createStudent(StudentModel std)
         {
-            std.FechaCreacion = DateTime.Today;
-            service.Insert(std);
-            string message = "SUCCESS";
-
+            var response = Task.Run(() => proxy.InsertAsync(std));
+            string message = response.Result.Mensaje;
             return Json(new { Message = message, JsonRequestBehavior.AllowGet });
-
         }
 
 
         [HttpPost]
-        public ActionResult UpdateStudent(Student std, int Id)
+        public ActionResult updateStudent(StudentModel student)
         {
-            std.FechaModificacion = DateTime.Today;
-            service.Update(std, Id);
-            string message = "SUCCESS";
-
+            var response = Task.Run(() => proxy.UpdateAsync(student));
+            string message = response.Result.Mensaje;
             return Json(new { Message = message, JsonRequestBehavior.AllowGet });
-
         }
 
         [HttpPost]
-        public ActionResult DeleteStudent(int Id)
+        public ActionResult deleteStudent(int id)
         {
-            service.Delete(Id);
-            string message = "SUCCESS";
-
+            var response = Task.Run(() => proxy.DeleteStudentAsync(id));
+            string message = response.Result.Mensaje;
             return Json(new { Message = message, JsonRequestBehavior.AllowGet });
-
         }
     }
 }

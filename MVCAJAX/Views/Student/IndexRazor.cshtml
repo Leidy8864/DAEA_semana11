@@ -1,5 +1,5 @@
 ﻿
-@model List<MVCAJAX.Controllers.StudentModel>
+@model List<MVCAJAX.Models.StudentModel>
 @{
     ViewBag.Title = "IndexRazor";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -30,18 +30,22 @@
 
     <table id="tblStudent" class="table table-bordered table-striped table-responsive table-hover">
         <thead>
+            <tr>
+                <th align="left" class="productth">Codigo</th>
+                <th align="left" class="productth">Nombre</th>
+                <th align="left" class="productth">Direccion</th>
+            </tr>
+        </thead>
+
+        <tbody>
             @foreach (var item in Model)
             {
                 <tr>
-                    <th align="left" class="productth">@item.ID</th>
+                    <th align="left" class="productth">@item.StudentID</th>
                     <th align="left" class="productth">@item.StudentName</th>
                     <th align="left" class="productth">@item.StudentAddress</th>
                 </tr>
             }
-
-        </thead>
-
-        <tbody>
         </tbody>
 
     </table>
@@ -59,10 +63,10 @@
 
             $("#btnSave").click(function () {
                 var std = {};
-                std.studentName = $('#StudentName').val();
-                std.studentAddress = $('#StudentAddress').val();
+                std.StudentName = $('#StudentName').val();
+                std.StudentAddress = $('#StudentAddress').val();
 
-
+                console.log(std);
                 $.ajax({
                     type: "POST",
                     url: '@Url.Action("createStudent")',
@@ -97,9 +101,9 @@
                     var items = '';
                     $.each(data, function (i, item) {
                         var rows = "<tr>"
-                            + "<td class'producttd'>" + item.studentID + "</td>"
-                            + "<td class'producttd'>" + item.studentName + "</td>"
-                            + "<td class'producttd'>" + item.studentAddress + "</td>"
+                            + "<td class'producttd'>" + item.StudentID + "</td>"
+                            + "<td class'producttd'>" + item.StudentName + "</td>"
+                            + "<td class'producttd'>" + item.StudentAddress + "</td>"
                             + "</tr>";
                         $('#tblStudent tbody').append(rows);
                     });
