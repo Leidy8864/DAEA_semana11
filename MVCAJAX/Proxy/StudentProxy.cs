@@ -8,15 +8,18 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Configuration;
 
 namespace MVCAJAX.Proxy
 {
     public class StudentProxy
     {
+        string urlBase = WebConfigurationManager.AppSettings["uri"];
+
         public async Task<ResponseProxy<StudentModel>> GetStudentsAsync()
         {
             var client = new HttpClient();
-            var urlBase = "https://localhost:44386";
+            //var urlBase = "https://localhost:44386";
             client.BaseAddress = new Uri(urlBase);
 
             var url = string.Concat(urlBase, "/api", "/Student", "/GetAllStudents");
@@ -46,7 +49,7 @@ namespace MVCAJAX.Proxy
         public async Task<ResponseProxy<StudentModel>> GetStudentAsync(int id)
         {
             var client = new HttpClient();
-            var urlBase = "https://localhost:44386";
+            //var urlBase = "https://localhost:44386";
             client.BaseAddress = new Uri(urlBase);
 
             var url = string.Concat(urlBase, "/api", "/Student", "/GetStudent/", id);
@@ -79,7 +82,7 @@ namespace MVCAJAX.Proxy
             var content = new StringContent(request, Encoding.UTF8, "application/json");
 
             var client = new HttpClient();
-            var urlBase = "https://localhost:44386";
+            //var urlBase = "https://localhost:44386";
             client.BaseAddress = new Uri(urlBase);
             var url = string.Concat(urlBase, "/api", "/Student", "/InsertStudents");
 
@@ -113,7 +116,7 @@ namespace MVCAJAX.Proxy
             var content = new StringContent(request, Encoding.UTF8, "application/json");
 
             var client = new HttpClient();
-            var urlBase = "https://localhost:44386";
+            //var urlBase = "https://localhost:44386";
 
             client.BaseAddress = new Uri(urlBase);
             var url = string.Concat(urlBase, "/api", "/Student", "/UpdateStudents");
@@ -145,7 +148,7 @@ namespace MVCAJAX.Proxy
         public async Task<ResponseProxy<StudentModel>> DetailStudentAsync(int ID)
         {
             var client = new HttpClient();
-            var urlBase = "https://localhost:44386";
+            //var urlBase = "https://localhost:44386";
 
             client.BaseAddress = new Uri(urlBase);
 
@@ -176,7 +179,7 @@ namespace MVCAJAX.Proxy
         public async Task<ResponseProxy<StudentModel>> DeleteStudentAsync(int ID)
         {
             var client = new HttpClient();
-            var urlBase = "https://localhost:44386";
+            //var urlBase = "https://localhost:44386";
 
             client.BaseAddress = new Uri(urlBase);
 
@@ -207,7 +210,7 @@ namespace MVCAJAX.Proxy
         public async Task<ResponseProxy<StudentModel>> SearchStudentsAsync(string query)
         {
             var client = new HttpClient();
-            var urlBase = "https://localhost:44386";
+            //var urlBase = "https://localhost:44386";
 
             client.BaseAddress = new Uri(urlBase);
 
